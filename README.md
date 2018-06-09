@@ -18,11 +18,11 @@ Não será necessário:
  - Implementar login ou autenticação;
 
 
-# Requisitos não funcionais
+## Requisitos não funcionais
 
 O sistema deverá ser implementado na plataforma web, utilizando qualquer versão do Javascript, HTML e CSS (se necessário) no fronend. A linguagem PHP será utilizada no backend (versão 5.4 ou superior).
 
-A persistencia dos dados pode ser feita por qualquer tecnologia não proprietária. Podem ser utilizados bancos de dados SQL, NoSQL, persistencia em arquivos binários ou de texto.
+A persistência dos dados pode ser feita por qualquer tecnologia não proprietária. Podem ser utilizados bancos de dados SQL, NoSQL, persistência em arquivos binários ou de texto.
 
 A estrutura de arquivos a ser utilizada deve ser a mesma desse repositório. Na parte PHP do projeto, podem ser utilizados quaisquer frameworks ou libs que melhor lhe convir. 
 
