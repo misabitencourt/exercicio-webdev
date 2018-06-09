@@ -1,0 +1,17 @@
+{
+  "name": "todobit-exercicio",
+  "version": "1.0.0",
+  "description": "Exercício de programação web",
+  "main": "web/src/index.js",
+  "scripts": {
+    "start": "rollup -c -w",
+    "build": "rollup -c"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "rollup": "^0.56.5",
+    "rollup-plugin-nodent": "^0.2.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "name": "todobit/exercicio",
+    "description": "Exercicio de desenvolvimento web",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Misael Braga de Bitencourt",
+            "email": "misael@todobit.com.br"
+        }
+    ],
+    "require": {}
+}
