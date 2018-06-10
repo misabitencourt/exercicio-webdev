@@ -20,7 +20,7 @@ Não será necessário:
 
 ## Requisitos não funcionais
 
-O sistema deverá ser implementado na plataforma web, utilizando qualquer versão do Javascript, HTML e CSS (se necessário) no fronend. A linguagem PHP será utilizada no backend (versão 5.4 ou superior).
+O sistema deverá ser implementado na plataforma web, utilizando qualquer versão do Javascript, HTML e CSS (se necessário) no frontend. A linguagem PHP será utilizada no backend (versão 5.4 ou superior).
 
 A persistência dos dados pode ser feita por qualquer tecnologia não proprietária. Podem ser utilizados bancos de dados SQL, NoSQL, persistência em arquivos binários ou de texto.
 
