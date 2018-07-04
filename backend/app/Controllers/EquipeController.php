@@ -100,7 +100,7 @@ class EquipeController extends BaseController
         } catch (\Exception $e) {
             echo json_encode(
                 [
-                    'code' => 404,
+                    'code' => 500,
                     'message' => 'Algum erro aconteceu'
                 ]
 
@@ -138,7 +138,7 @@ class EquipeController extends BaseController
         } catch (\Exception $e) {
             echo json_encode(
                 [
-                    'code' => 404,
+                    'code' => 500,
                     'message' => 'Algum erro aconteceu'
                 ]
 
@@ -150,24 +150,34 @@ class EquipeController extends BaseController
     private function save_validate($requestBody)
     {
         if (!is_array($requestBody) OR empty($requestBody)) {
-            throw new EquipeControllerException('Os campos nome, grupo e continente são obrigatórios', 404);
+            throw new EquipeControllerException('Os campos nome, grupo e continente são obrigatórios', 422);
         }
 
         if (!array_key_exists('name', $requestBody) OR empty(trim($requestBody['name']))) {
-            throw new EquipeControllerException('O Campo nome é obrigatório', 404);
+            throw new EquipeControllerException('O Campo nome é obrigatório', 422);
         }
 
         if (!array_key_exists('grupo', $requestBody) OR empty(trim($requestBody['grupo']))) {
-            throw new EquipeControllerException('O Campo grupo é obrigatório', 404);
+            throw new EquipeControllerException('O Campo grupo é obrigatório', 422);
         }
 
         if (!array_key_exists('continente', $requestBody) OR empty(trim($requestBody['continente']))) {
-            throw new EquipeControllerException('O Campo continente é obrigatório', 404);
+            throw new EquipeControllerException('O Campo continente é obrigatório', 422);
         }
 
+        if (Equipes::where('name', '=', trim($requestBody['name']))->count() > 0) {
+            throw new EquipeControllerException('A equipe já existe!', 409);
+        }
+
+
         $grupoId = trim($requestBody['grupo']);
+
+        if (Grupos::where('id', '=', $grupoId)->count() == 0) {
+            throw new EquipeControllerException('O grupo selecionado não existe!', 409);
+        }
+
         if (Equipes::where('grupo_id', '=', $grupoId)->count() > 4) {
-            throw new EquipeControllerException('O grupo selecionado já está lotado!', 404);
+            throw new EquipeControllerException('O grupo selecionado já está lotado!', 409);
         }
 
     }
@@ -175,14 +185,14 @@ class EquipeController extends BaseController
     private function search_validate($routeBody)
     {
         if (empty($routeBody->getArgument('name'))) {
-            throw new EquipeControllerException('O Campo nome é obrigatório', 404);
+            throw new EquipeControllerException('O Campo nome é obrigatório', 422);
         }
     }
 
     private function delete_validate($routeBody)
     {
         if (empty($routeBody->getArgument('id'))) {
-            throw new EquipeControllerException('O Campo ID é obrigatório', 404);
+            throw new EquipeControllerException('O Campo ID é obrigatório', 422);
         }
     }
 }
