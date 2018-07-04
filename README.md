@@ -35,13 +35,17 @@ O prazo de entrega será aquele acordado previamente com o responsável que mini
 
 A entrega deve ser feita por meio de um pull-request nesse repositório.
 
-
-# Como rodar as migrações
+# Como rodar composer
 
 $ cd backend/
 
-$ docker-compose run php7 php ./vendor/bin/phinx migrate
+$ docker-compose run composer
 
 # Levantar o servidor back end
 
 $ docker-compose up -d
+
+
+# Como rodar as migrações
+
+$ docker-compose run php7 php ./vendor/bin/phinx migrate

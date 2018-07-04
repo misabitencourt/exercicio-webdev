@@ -10,7 +10,7 @@ class CriandoTabelaEquipes extends AbstractMigration
         $users = $this->table('equipes');
         $users->addColumn('name', 'string', ['limit' => 30])
             ->addColumn('continente', 'string', ['limit' => 30])
-            ->addColumn('grupo_id', 'integer', ['null' => false])
+            ->addColumn('grupo_id', 'integer', ['null' => true])
             ->addForeignKey('grupo_id', 'grupos', 'id', ['delete'=> 'SET_NULL', 'update'=> 'NO_ACTION'])
             ->save();
     }

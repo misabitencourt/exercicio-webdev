@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Equipes;
+use App\Models\Grupos;
 
 class EquipeControllerException extends \Exception
 {
@@ -12,12 +13,62 @@ class EquipeControllerException extends \Exception
 
 class EquipeController extends BaseController
 {
-    public function list($request, $response)
+    public function list()
     {
-        return json_encode(Equipes::with('grupo')->get());
+        try {
+            echo json_encode(
+                [
+                    'code' => 200,
+                    'message' => Equipes::with('grupo')->get()
+                ]
+
+            );
+        } catch (\Exception $e) {
+            echo json_encode(
+                [
+                    'code' => 404,
+                    'message' => 'Algum erro aconteceu'
+                ]
+
+            );
+        }
     }
 
-    public function save($request, $response)
+    public function search($request)
+    {
+        try {
+            $route = $request->getAttribute('route');
+            $this->search_validate($route);
+
+            echo json_encode(
+                [
+                    'code' => 200,
+                    'message' => Equipes::where('name', 'LIKE', $route->getArgument('name') . '%')->get()
+                ]
+
+            );
+
+        } catch (EquipeControllerException $e) {
+            echo json_encode(
+                [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ]
+
+            );
+        } catch (\Exception $e) {
+            echo json_encode(
+                [
+                    'code' => 404,
+                    'message' => 'Algum erro aconteceu'
+                ]
+
+            );
+        }
+    }
+
+
+    public function save($request)
     {
         try {
             $requestBody = $request->getParsedBody();
@@ -47,9 +98,6 @@ class EquipeController extends BaseController
 
             );
         } catch (\Exception $e) {
-            echo "<pre>";
-            print_r($e);
-            echo "</pre>";
             echo json_encode(
                 [
                     'code' => 404,
@@ -61,8 +109,50 @@ class EquipeController extends BaseController
 
     }
 
-    public function save_validate($requestBody)
+    public function delete($request)
     {
+        try {
+            $route = $request->getAttribute('route');
+            $this->delete_validate($route);
+
+            if (!Equipes::destroy($route->getArgument('id'))) {
+                throw new EquipeControllerException("Equipe ID é inválido!", 400);
+            }
+
+            echo json_encode(
+                [
+                    'code' => 200,
+                    'message' => 'Equipe excluída com sucesso!'
+                ]
+
+            );
+
+        } catch (EquipeControllerException $e) {
+            echo json_encode(
+                [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ]
+
+            );
+        } catch (\Exception $e) {
+            echo json_encode(
+                [
+                    'code' => 404,
+                    'message' => 'Algum erro aconteceu'
+                ]
+
+            );
+        }
+    }
+
+
+    private function save_validate($requestBody)
+    {
+        if (!is_array($requestBody) OR empty($requestBody)) {
+            throw new EquipeControllerException('Os campos nome, grupo e continente são obrigatórios', 404);
+        }
+
         if (!array_key_exists('name', $requestBody) OR empty(trim($requestBody['name']))) {
             throw new EquipeControllerException('O Campo nome é obrigatório', 404);
         }
@@ -75,5 +165,24 @@ class EquipeController extends BaseController
             throw new EquipeControllerException('O Campo continente é obrigatório', 404);
         }
 
+        $grupoId = trim($requestBody['grupo']);
+        if (Equipes::where('grupo_id', '=', $grupoId)->count() > 4) {
+            throw new EquipeControllerException('O grupo selecionado já está lotado!', 404);
+        }
+
+    }
+
+    private function search_validate($routeBody)
+    {
+        if (empty($routeBody->getArgument('name'))) {
+            throw new EquipeControllerException('O Campo nome é obrigatório', 404);
+        }
+    }
+
+    private function delete_validate($routeBody)
+    {
+        if (empty($routeBody->getArgument('id'))) {
+            throw new EquipeControllerException('O Campo ID é obrigatório', 404);
+        }
     }
 }
