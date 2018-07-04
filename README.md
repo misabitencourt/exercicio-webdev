@@ -35,3 +35,44 @@ O prazo de entrega será aquele acordado previamente com o responsável que mini
 
 A entrega deve ser feita por meio de um pull-request nesse repositório.
 
+# Como rodar composer
+
+$ cd backend/
+
+$ docker-compose run composer
+
+# Levantar o servidor back end
+
+$ docker-compose up -d
+
+
+# Como rodar as migrações
+
+$ docker-compose run php7 php ./vendor/bin/phinx migrate
+
+# CRUD Rotas
+
+## Save Method
+
+* Method: POST
+* Url: http://localhost/save
+* POST Body: ```{ "name": "Brasil", "grupo": "1", "continente": "América" }```
+
+## Delete Method
+
+* Method: DELETE
+* Url: http://localhost/delete/{equipe_id}
+
+## Search Method
+
+* Method: GET
+* Url: http://localhost/search/{equipe_name}
+* Response Format: JSON
+* Response Data: ```{"code":200,"message":[{"id":6,"name":"Brasil","continente":"América","grupo_id":12}]}```
+
+## List Method
+
+* Method: GET
+* Url: http://localhost/list
+* Response Format: JSON
+* Response Data: ```{"code":200,"message":[{"id":6,"name":"Brasil","continente":"América","grupo_id":12}, {"id":6,"name":"Argentina","continente":"América","grupo_id":10}]}```

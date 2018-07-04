@@ -1,0 +1,33 @@
+version: '3'
+
+volumes:
+    logs:
+        driver: local
+
+services:
+    php7:
+        build: .
+        working_dir: /var/www
+        command: php -S 0.0.0.0:8080 -t public
+        environment:
+            docker: "true"
+        ports:
+            - 80:8080
+        volumes:
+            - .:/var/www
+            - logs:/var/www/logs
+    database:
+        image: mysql:5.6
+        ports:
+          - 3306:3306
+        volumes:
+          - ./docker/volumes/database/etc/mysql:/etc/mysql/conf.d
+          - ./docker/volumes/database-storage:/var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: "root"
+          MYSQL_DATABASE: "database"
+    composer:
+        image: composer
+        command: install
+        volumes:
+          - ./:/app
