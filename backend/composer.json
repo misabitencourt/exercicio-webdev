@@ -1,13 +1,13 @@
 {
-    "name": "todobit/exercicio",
-    "description": "Exercicio de desenvolvimento web",
-    "type": "project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Misael Braga de Bitencourt",
-            "email": "misael@todobit.com.br"
+    "require": {
+        "slim/slim": "^3.7",
+        "slim/twig-view": "^2.1",
+        "illuminate/database": "^5.3",
+        "robmorgan/phinx": "^0.10.3"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "App\\" : "app"
         }
-    ],
-    "require": {}
+    }
 }

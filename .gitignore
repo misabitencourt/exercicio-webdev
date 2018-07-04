@@ -1,3 +1,5 @@
 /node_modules
 /.history
 /backend/vendor
+/backend/docker/volumes/database-storage
+.idea/
