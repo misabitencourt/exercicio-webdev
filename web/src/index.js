@@ -1,5 +1,5 @@
 import backendTest from './backend-test.js';
-import {filter,addButton,table,fetchJson,rowtoJson,sendRequest,addForm} from './functions.js';
+import {filter,addButton,table,addForm} from './functions.js';
 
 export default element => {
     window.onkeypress= (e)=>{
