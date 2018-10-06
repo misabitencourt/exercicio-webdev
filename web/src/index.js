@@ -1,10 +1,14 @@
 import backendTest from './backend-test.js';
-
+import {filter,addButton,table,addForm} from './functions.js';
 
 export default element => {
-    element.textContent = 'Hello world';
-
-    backendTest().then(test => console.log(test));
-
-    // Seu código começa aqui!!
+    window.onkeypress= (e)=>{
+       if(e.key == "Enter"){
+           document.getElementsByTagName('button')[0].onclick();
+       }
+    }
+    element.appendChild(filter());
+    element.appendChild(table());
+    element.appendChild(addForm());
+    element.appendChild(addButton());
 }
