@@ -6,45 +6,29 @@ export function table(){
 }
 function tableHeaders(){
     tableHeaders = document.createElement('thead');
-    fetchJson("selecao-info.php").then(
-        data=>{
-            data.forEach( position=>{
+    fetchJson("selecao-info.php").then( 
+        data => {
+            data.forEach( 
+                position => {
                     let header = document.createElement('th');
                     header.innerText = position;
                     tableHeaders.appendChild(header);
                 }
             )
-            let actions = document.createElement('th');
-            actions.innerHTML= ""
-            tableHeaders.appendChild(actions);
+            tableHeaders.appendChild(document.createElement('th'));
         }
     )
     return tableHeaders;
 }
 function tableContent(){
     tableContent = document.createElement('tbody');
-    fetchJson("selecao-list.php").then(data => {
-       data.forEach(position => {
-           let tableRow = document.createElement('tr');
-           for(let value in position ){
-               let cell = document.createElement('td');
-               cell.innerText = position[value];
-               cell.contentEditable = true;
-               cell.onblur = function(){
-                    sendRequest(rowtoJson(deleteButton.parentElement),"selecao-update.php")
-               }
-               tableRow.appendChild(cell);
-           }
-           let deleteButton = document.createElement('td');
-           deleteButton.innerHTML="<i class='fas fa-minus-circle zoomFont'></i>"
-           deleteButton.onclick = function(){
-                sendRequest(rowtoJson(deleteButton.parentElement),"selecao-delete.php")
-                tableContent.removeChild(deleteButton.parentElement);
-           }
-           tableRow.appendChild(deleteButton)
-           tableContent.appendChild(tableRow);
-       });
-    }
+    fetchJson("selecao-list.php").then(
+        data => {
+            data.forEach(json => {
+                tableContent.appendChild(tableRow(json));
+                }
+            );
+        }
     );
     return tableContent;
 }
@@ -55,35 +39,33 @@ export async function fetchJson(file){
 }
 export function rowtoJson(row){
     let obj = {};
+    let tableHeaders = document.getElementsByTagName('thead')[0].childNodes;
     for( let i = 0 ; i< row.cells.length-1 ; i++){
         if(row.cells[i].innerText != "" && row.cells[i].innerText != "\n"){
-            obj[document.getElementsByTagName('thead')[0].childNodes[i].innerText.toLowerCase()] = row.cells[i].innerText.replace('\n','');
+            obj[tableHeaders[i].innerText.toLowerCase()] = row.cells[i].innerText.replace('\n','');
         }
         else{
-            obj[document.getElementsByTagName('thead')[0].childNodes[i].innerText.toLowerCase()] = null;
+            obj[tableHeaders[i].innerText.toLowerCase()] = null;
         }
     }
     return JSON.stringify(obj);
 }
 export async function sendRequest(json,file){
-    console.log(json);
-  
-    var myRequest = new Request('/backend/'+ file ,
-    {
-        method: 'post',
-        body: json,
-        headers: {
-            'Content-Type': 'text/json'
+    let request = new Request('/backend/'+ file ,
+        {
+            method: 'post',
+            body: json,
+            headers: {
+                'Content-Type': 'text/json'
+            }
         }
-    }
     );
-    let response = await fetch(myRequest);
+    let response = await fetch(request);
     let data = await response.json();
     if(data['err'] != undefined){
         window.alert(data['err']);
         location.reload();
     } 
-
     return data;
 }
 export function addForm(){
@@ -95,22 +77,17 @@ export function addForm(){
     div.appendChild(formTitle)
     div.appendChild(form)
     fetchJson("selecao-info.php").then(
-        data=>{
-            data.forEach( position=>{
-                    if( position == "_id") return;
-                    let input = document.createElement('input');
-                    input.name = position;
-                    input.placeholder = position.charAt(0).toUpperCase() + position.slice(1);;
-                    input.required = true;
-                    form.appendChild(input);
+        data => {
+            data.forEach( value => {
+                if( value == "_id") return;
+                form.appendChild(formInput(value));
                 }
             )
         }
-       
     )
     return div;
 }
-export function formtoJson(form){
+export function formToJson(form){
     let obj = {};
     for( let i = 0 ; i< form.length ; i++){
             console.log(form[i].value);
@@ -124,7 +101,7 @@ export function addButton(){
     button.className = "zoom";
     button.style = " --zoomSize : 1.2 "
     button.onclick = function(){
-        sendRequest(formtoJson(document.getElementsByTagName('form')[0]),"selecao-insert.php").then( done=>location.reload());  
+        sendRequest(formToJson(document.getElementsByTagName('form')[0]),"selecao-insert.php").then( done=>location.reload());  
     } 
     button.type = "submit";
     return button;
@@ -154,4 +131,37 @@ export function filter(){
         }
     }
     return filter;
+}
+function cell(value){
+    let cell = document.createElement('td');
+    cell.innerText = value;
+    cell.contentEditable = true;
+    cell.onblur = function(){
+        sendRequest(rowtoJson(this.parentElement),"selecao-update.php")
+    }
+    return cell;
+}
+function deleteButton(){
+    let deleteButton = document.createElement('td');
+    deleteButton.innerHTML="<i class='fas fa-minus-circle zoomFont'></i>"
+    deleteButton.onclick = function(){
+            sendRequest(rowtoJson(deleteButton.parentElement),"selecao-delete.php")
+            tableContent.removeChild(deleteButton.parentElement);
+    }
+    return deleteButton;
+}
+function tableRow(json){
+    let tableRow = document.createElement('tr');
+    for(let value in json ){
+        tableRow.appendChild(cell(json[value]));
+    }
+    tableRow.appendChild(deleteButton())
+    return tableRow;
+}
+function formInput(value){
+    let input = document.createElement('input');
+    input.name = value;
+    input.placeholder = value.charAt(0).toUpperCase() + value.slice(1);;
+    input.required = true;
+    return input;
 }

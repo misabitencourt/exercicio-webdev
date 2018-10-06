@@ -23,24 +23,20 @@ class Model {
         while( $x  = $result->fetchArray(SQLITE3_ASSOC)){
             $arr[] = $x; 
         }
-        $json = json_encode($arr);
-        return $json;
+        return $arr;
     }
 
     function update($json){
       $arr = json_decode($json,true);
       $_id = $arr['_id'];
       array_shift($arr);
-      $sql = "UPDATE {$this->tableName} 
-                SET ";
+      $sql = "UPDATE {$this->tableName} SET ";
       foreach( $arr as $campo => $valor){
-          if(gettype($valor) == "NULL"){
-            continue;    
-          }else if (gettype($valor) == "string"){
+        if (gettype($valor) == "string"){
             $sql.= $campo ." =  '" . $valor."' ,";
-          }else{
+        } else {
             $sql.= $campo ." = " . $valor." ,";
-          }
+        }
       }
       $sql[strlen($sql)-1] = " ";
       $sql.= " WHERE _id = {$_id} "; 
@@ -58,9 +54,7 @@ class Model {
         $sql[strlen($sql)-1] = ")";
         $sql.= " VALUES (";
         foreach( $arr as $valor){
-            if(gettype($valor) == "NULL"){
-              continue;    
-            }else if (gettype($valor) == "string"){
+            if (gettype($valor) == "string"){
               $sql.= "'".$valor."' ,";
             }else{
               $sql.= $valor." ,";
@@ -79,21 +73,19 @@ class Model {
     }
 
     function getTableColumns(){
-        return json_encode($this->tableColumns);
+        return $this->tableColumns;
     }
 }
 
 class Selecao extends Model{ 
-
-    
     function __construct(){
         parent::__construct("selecao");
 
     }
     function validateData($json){
         $arr = json_decode($json,true);
-        foreach(json_decode($this->list(),true) as $list){
-            if($list['nome'] == $arr['nome'] && $list['_id'] <>  $arr['_id']){
+        foreach($this->list() as $list){
+            if(strtolower($list['nome']) == strtolower($arr['nome']) && $list['_id'] <>  $arr['_id']){
                 return (['err'=>'Nome desta selecao já cadastrada']);
             }
         }
@@ -109,7 +101,7 @@ class Selecao extends Model{
     }
     function insert($json){
         if(!$this->validateData($json)){
-            if(count(json_decode($this->list(),true)) == 32){
+            if(count($this->list()) == 32){
                 return (['err'=>"Limite de Seleções excedido"]) ; 
             }
             return parent::insert($json);

@@ -1,3 +1,8 @@
+html{
+    background-color: white;
+    color:black;
+    font-family: 'Courier New', Courier, monospace
+}
 #app{
     margin-left: auto;
     margin-right: auto;
@@ -15,11 +20,11 @@ table{
 }
 th{
     text-transform: capitalize;
-    font-size: 24px;
-    background-color: lightblue;
+    font-size: 2vw;
+    background-color: darkcyan;
 }
 td{
-    font-size: 20px;
+    font-size: 1.6vw;
     text-transform: capitalize;
 }
 td:focus{
@@ -27,24 +32,30 @@ td:focus{
 }
 
 tr:nth-child(odd) {
-    background-color: #f2f2f2;
+    background-color:  lightgray;
+}
+tr:nth-child(even) {
+    background-color: white;
 }
 i{
     color : red;
-    font-size: 30px;
+    font-size: 2.2vw;
     padding: 1%;
 }
 form{
     margin: 2%;
     display: flex;
     width: 96%;
-    background-color: #f2f2f2;
-    border-radius: 10px;
+    background-color: darkcyan;
+    padding: 1%;
+    border-radius: 1vw;
 }
 input{
     margin: 1%;
-    flex-basis: 100%;
+    width: 29.5%;
+    font-size: 1.6vw;
     text-transform: capitalize;
+    
 }
 button{
     margin-left: 42.5%;
@@ -54,9 +65,9 @@ button{
     width:15%;
     border : 1px solid blue;
     padding: 1%;
-    border-radius: 10px;
+    border-radius: 1vw;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 1.6vw;
 }
 .zoom {
     transition: transform var(--zoomTiming,.2s);
@@ -80,4 +91,10 @@ button{
     margin-right: auto;
     width: 60%;
 
+}
+h1{
+    font-size: 3vw;
+}
+h3{
+    font-size: 1.4vw;
 }
