@@ -85,9 +85,16 @@ class Selecao extends Model{
     function validateData($json){
         $arr = json_decode($json,true);
         foreach($this->list() as $list){
-            if(strtolower($list['nome']) == strtolower($arr['nome']) && $list['_id'] <>  $arr['_id']){
-                return (['err'=>'Nome desta selecao já cadastrada']);
+            if(isset($arr['_id'])){
+                if(strtolower($list['nome']) == strtolower($arr['nome']) && $list['_id'] <>  $arr['_id']){
+                    return (['err'=>'Nome desta selecao já cadastrada']);
+                }
+            }else{
+                if(strtolower($list['nome']) == strtolower($arr['nome'])){
+                    return (['err'=>'Nome desta selecao já cadastrada']);
+                }
             }
+            
         }
         if(strlen($arr['grupo'])> 1) return (['err'=>'Campo grupo possui mais de um caracter']);
         $arr['grupo'] = strtoupper($arr['grupo']);
