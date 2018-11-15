@@ -65,9 +65,7 @@ function selecao_buscar( $filtro =''){
             . ", continente "
             . "FROM selecao WHERE nome = '"
             . $filtro
-            . "'";
-
-    echo $vmSql;    
+            . "'";    
     
     $vmResultado = mysqli_query( conectar(), $vmSql );     
     
@@ -77,4 +75,19 @@ function selecao_buscar( $filtro =''){
     }
     
     return $vtResultado;
+}
+
+function validar()
+{
+    $vmSql = "SELECT * "
+            . "FROM selecao WHERE 1";
+    
+    $vmResultado = mysqli_query( conectar(), $vmSql );     
+    
+    $vtResultado = array();
+    while ($vtSelecao = mysqli_fetch_assoc($vmResultado)){
+        $vtResultado[] = $vtSelecao;
+    }
+    
+    return sizeof($vtResultado) < 33;
 }
