@@ -2,15 +2,142 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
-  <title>Exercício</title>
+  <title>Copa do Mundo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
 </head>
 <body>
-  <div id="app"></div>
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Grupo</th>
+      <th scope="col">Continente</th>
+    </tr>
+  </thead>
+  </table>
+    
+    <form class="form-inline my-2 my-lg-0" 
+                  action="backend/selecao-act-show.php"
+                   method="POST">
+              <input class="form-control mr-sm-2" 
+                     type="search" 
+                     name="vfTextoBusca" 
+                     placeholder="Digite a selecao" 
+                     aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0"
+                      type="submit">Buscar</button>
+    </form>
+    
+    
+    <h3> Cadastrar </h3>
+    <form action="backend/selecao-act-cadastrar.php" method="post" enctype="multipart/form-data">
 
-  <script src="bundle.js"></script>
-  <script>
-    app(document.getElementById('app'));
-  </script>
+        <table class='table table-light'>
+            <tr>
+                <td>Nome</td>
+                <td><input type="text" 
+                           name="nome" 
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o nome da selecao')"></td>
+            </tr>
+            <tr>
+                <td>Grupo </td>
+                <td><input type="text" 
+                           name="grupo"
+                           maxlenght=1
+                           required 
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o grupo da selecao')"> </td>
+            </tr>           
+            <tr>
+                <td>Continente:</td>
+                <td><input type="text" 
+                           name="continente" 
+                           required 
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o o continente da selecao')"></td>
+            </tr>           
+            <tr>
+                <td colspan="2" align="center">
+                    <input class='btn btn-primary' type="submit" value="Gravar">
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
+    
+    <form action="backend/selecao-act-alterar.php" method="post" enctype="multipart/form-data">
+
+        <h3> Alterar </h3>
+        <table class='table table-light'>
+            <tr>
+                <td>Nome da tabela que vai ser alterada</td>
+                <td><input type="text" 
+                           name="id" 
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o nome da selecao')"></td>
+            </tr>
+            
+            <tr>
+                <td>Nome</td>
+                <td><input type="text" 
+                           name="nome" 
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o nome da selecao')"></td>
+            </tr>
+            <tr>
+                <td>Grupo </td>
+                <td><input type="text" 
+                           name="grupo"
+                           required 
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o grupo da selecao')"> </td>
+            </tr>           
+            <tr>
+                <td>Continente:</td>
+                <td><input type="text" 
+                           name="continente" 
+                           required 
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o o continente da selecao')"></td>
+            </tr>           
+            <tr>
+                <td colspan="2" align="center">
+                    <input class='btn btn-primary' type="submit" value="Alterar">
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
+    
+    <form action="backend/selecao-act-deletar.php" method="post" enctype="multipart/form-data">
+
+        <h3> Deletar </h3>
+        <table class='table table-light'>
+            <tr>
+                <td>Nome da tabela que vai ser deletada</td>
+                <td><input type="text" 
+                           name="id" 
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('Favor preencher o nome da selecao')"></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center">
+                    <input class='btn btn-primary' type="submit" value="Deletar">
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
 </body>
 </html>
